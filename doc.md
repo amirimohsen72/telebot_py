@@ -75,4 +75,10 @@ bot.download_file(file_info.file_path)
 import sqlite3
 MAIN_DB = sqlite3.connect('test_db.db')
 MAIN_CURSOR = MAIN_DB.cursor()
+
+
+MAIN_CURSOR.execute("select * from users where chat_id = '"+ str(message.chat.id) +"'")
+result = MAIN_CURSOR.fetchone()
+
 ````
+
