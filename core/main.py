@@ -41,7 +41,7 @@ def keyboard_keyword(message):
     # markup= telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4,input_field_placeholder='از دکمه کیورد شورتکات انتخاب نمایید', one_time_keyboard=True).add('تست1')
     markup= telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4,input_field_placeholder='از دکمه کیورد شورتکات انتخاب نمایید', one_time_keyboard=True)
     markup.add('حذف کیبورد شورتکات')
-    markup.add('نمایش اطلاعات من','متن سوم')
+    markup.add('نمایش اطلاعات من','شروع ویرایش اطلاعات')
     bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
 
     
@@ -59,6 +59,11 @@ def send_wellcome(message):
     elif message.text == 'حذف کیبورد شورتکات'  :
         bot.send_message(message.chat.id,'شروع مجدد', reply_markup=telebot.types.ReplyKeyboardRemove())
     
+    elif message.text == 'شروع ویرایش اطلاعات':
+        bot.send_message(message.chat.id, 'نام را وارد کنید', reply_markup = telebot.types.ReplyKeyboardRemove())
+        MAIN_CURSOR.execute("UPDATE users SET status='edit_name' WHERE chat_id='" + str(message.chat.id) + "'")
+        MAIN_DB.commit()
+
     elif message.text == 'نمایش اطلاعات من'  :
         MAIN_CURSOR.execute("select * from users where chat_id='"+str(message.chat.id)+"'")
         result = MAIN_CURSOR.fetchone()
@@ -69,15 +74,33 @@ def send_wellcome(message):
     نام خانوادگی شما ```{result[3]}```
 ⚡🎃
 ''', parse_mode='Markdown')
-        # jsdc = str(user[2] + ' ' + ' status :' + user[4])
-        # bot.send_message(message.chat.id,jsdc)
+
 
     elif message.text.startswith('file')  :
         with open('core/testfile.txt','rb') as file:
             bot.send_document(message.chat.id,file)
 
+
     else :
-        bot.reply_to(message, 'پیام دریافت شد . بعد از بررسی پاسخ خواهیم داد')
+        MAIN_CURSOR.execute("SELECT status FROM users WHERE chat_id='" + str(message.chat.id) + "'")
+        result = MAIN_CURSOR.fetchone()
+        if result and result[0] in ['edit_name','edit_lname','edit_age']:
+            if result[0] == 'edit_name':
+                bot.send_message(message.chat.id, 'نام خانوادگی را وارد کن')
+                MAIN_CURSOR.execute("UPDATE users SET status='edit_lname', name='" + message.text + "' WHERE chat_id='" + str(message.chat.id) + "'")
+                MAIN_DB.commit()
+            elif result[0] == 'edit_lname':
+                bot.send_message(message.chat.id, 'سن رو بده')
+                MAIN_CURSOR.execute("UPDATE users SET status='edit_age', last_name='" + message.text + "' WHERE chat_id='" + str(message.chat.id) + "'")
+                MAIN_DB.commit()
+            elif result[0] == 'edit_age':
+                markup = telebot.types.ReplyKeyboardMarkup(True, True)
+                markup.add('شروع ویرایش اطلاعات', 'نمایش اطلاعات من')
+                bot.send_message(message.chat.id, 'سلام 😎💖', reply_markup = markup)
+                MAIN_CURSOR.execute("UPDATE users SET status='submited', age='" + message.text + "' WHERE chat_id='" + str(message.chat.id) + "'")
+                MAIN_DB.commit()
+        else:
+            bot.reply_to(message, 'پیام دریافت شد . بعد از بررسی پاسخ خواهیم داد')
 
 
 bot.infinity_polling()
