@@ -48,3 +48,10 @@ bot.download_file(file_info.file_path)
 سپس در پایتون فایل دانلود را در یک فایل ذخیره میکنیم.
 
 
+کیبورد شیشه ای :
+````
+    markup= telebot.types.InlineKeyboardMarkup()
+    button1= telebot.types.InlineKeyboardButton('تلگرام',url='https://t.me/rafanet')
+    markup.add(button1)
+    bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
+````
