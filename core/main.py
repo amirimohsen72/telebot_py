@@ -15,6 +15,17 @@ def keyboard_shishee(message):
     markup.add(button1)
     markup.add(button2,button3)
     bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
+
+
+@bot.message_handler(['action2'], func = lambda message:True)
+def keyboard_keyword(message):
+    # markup= telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4,input_field_placeholder='از دکمه کیورد شورتکات انتخاب نمایید', one_time_keyboard=True).add('تست1')
+    markup= telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4,input_field_placeholder='از دکمه کیورد شورتکات انتخاب نمایید', one_time_keyboard=True)
+    markup.add('متن دلخواه 1')
+    markup.add('متن دوم','متن سوم')
+    bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
+
+    
 # @bot.message_handler(content_types=['voice','document','photo'])
 
 @bot.callback_query_handler(func=lambda call:True)
