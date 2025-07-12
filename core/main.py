@@ -10,12 +10,17 @@ bot = telebot.TeleBot(API_TOKEN)
 def keyboard_shishee(message):
     markup= telebot.types.InlineKeyboardMarkup()
     button1= telebot.types.InlineKeyboardButton('تلگرام',url='https://t.me/rafanet')
-    button2= telebot.types.InlineKeyboardButton('گوگل',url='https://google.com')
+    button2= telebot.types.InlineKeyboardButton(' تکرار (دیتا)نام کالبک',callback_data='testcallback')
     button3= telebot.types.InlineKeyboardButton('سایت',url='https://amirimohsen.ir')
     markup.add(button1)
     markup.add(button2,button3)
     bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
 # @bot.message_handler(content_types=['voice','document','photo'])
+
+@bot.callback_query_handler(func=lambda call:True)
+def testcallfunction(call):
+    if call.data == 'testcallback' :
+        bot.send_message(call.message.chat.id,call.data)
 
 @bot.message_handler()
 def send_wellcome(message):
