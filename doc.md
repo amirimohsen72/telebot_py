@@ -70,3 +70,9 @@ bot.download_file(file_info.file_path)
         bot.send_message(message.chat.id,'شروع مجدد', reply_markup=telebot.types.ReplyKeyboardRemove())
 ````
 
+اتصال به دیتابیس sqlite
+````
+import sqlite3
+MAIN_DB = sqlite3.connect('test_db.db')
+MAIN_CURSOR = MAIN_DB.cursor()
+````
