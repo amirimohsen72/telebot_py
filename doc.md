@@ -63,3 +63,10 @@ bot.download_file(file_info.file_path)
     markup= telebot.types.ReplyKeyboardMarkup().add('تست1')
     bot.send_message(message.chat.id,'عملیات را انتخاب کنید',reply_markup=markup)
 ````
+
+
+برداشتن شورتکات های اضافه شده از منو
+````
+        bot.send_message(message.chat.id,'شروع مجدد', reply_markup=telebot.types.ReplyKeyboardRemove())
+````
+
