@@ -1,5 +1,6 @@
 # telebot_py
 telegram bot with telebot in python
+( pyTelegramBotAPI )
 
 
 #env and run
@@ -28,4 +29,6 @@ copy and make Env file:
 get telegram bot api token and replace
 simple.env  to .env
 ````
+
+
 
